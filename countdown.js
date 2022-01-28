@@ -9,17 +9,20 @@ var focusMin, focusSec;
 var tag;
 
 function startCountdown() {
-	min = timeSpan;
-	if (min) sec = 0;
-	else sec = 3;
+	if(tag == "") alert("請輸入標籤");
+	else{
+		min = timeSpan;
+		if (min) sec = 0;
+		else sec = 3;
 
-	document.getElementById("beforeCounting").hidden = "true";
-	document.getElementById("greet").hidden = "true";
-	document.getElementById("Counting").removeAttribute("hidden");
+		document.getElementById("beforeCounting").hidden = "true";
+		document.getElementById("greet").hidden = "true";
+		document.getElementById("Counting").removeAttribute("hidden");
 
-	current_time = Date.now();
-	if (!window.setInterval(checkStatus, 1000)) { //好笨 要執行的函式後面不用加括號啦
-		event.stopPropagation(); //啊不然他結束之後會一直叫(?)		
+		current_time = Date.now();
+		if (!window.setInterval(checkStatus, 1000)) { //好笨 要執行的函式後面不用加括號啦
+			event.stopPropagation(); //啊不然他結束之後會一直叫(?)		
+		}
 	}
 }
 
@@ -59,14 +62,19 @@ function setTag(){
 }
 
 function setTimespan() {
-	var time = prompt("請輸入您想要設定的時長(分鐘)\n請勿輸入非整數的文字");
+	var time = prompt("請輸入您想要設定的時長(分鐘)\n請勿輸入非整數的文字!");
 	//過濾掉使用者輸入非整數的情況?
-	timeSpan = time;
-	document.getElementById("sec").innerHTML = '00';
-	if (timeSpan < 10)
-		document.getElementById("min").innerHTML = '0' + timeSpan.toString();
-	else
-		document.getElementById("min").innerHTML = timeSpan.toString();
+	time = Number(time);
+	console.log(time);
+	if(isNaN(time)) alert("啊你是聽不懂人話喔?");
+	else{
+		timeSpan = time;
+		document.getElementById("sec").innerHTML = '00';
+		if (timeSpan < 10)
+			document.getElementById("min").innerHTML = '0' + timeSpan.toString();
+		else
+			document.getElementById("min").innerHTML = timeSpan.toString();
+	}
 }
 
 function end() {
@@ -75,9 +83,16 @@ function end() {
 	x.src = "coin01.mp3";
 	x.play();
 	x.id = "finish"; //好像有點毒但是我顧不了那麼多了
-	document.getElementById("header").style = "background-color:rgb(40, 184, 228);";
-	document.getElementById("afterCounting").removeAttribute("hidden");
-	document.getElementById("Counting").hidden = "true";
+	if(document.getElementById("Counting").hidden = "false"){
+		document.getElementById("header").style = "background-color:rgb(40, 184, 228);";
+		document.getElementById("afterCounting").removeAttribute("hidden");
+		document.getElementById("Counting").hidden = "true";
+	}else{
+		alert("休息結束，繼續工作!");
+		location.reload();
+	}
+	
+	
 	if (sec != 0) {
 		focusSec = 60 - sec;
 		focusMin = timeSpan - 1 - min;
@@ -128,14 +143,19 @@ function changeTag(){
 	
 }
 //next station => dropdown + modal + 增加清單
-
+function rest(){
+	timeSpan = 5;
+	startCountdown();
+}
 function save(){
-	console.log(current_time);
+	/*console.log(current_time);
     //因為不註解的話會直接跳轉到那個php, 所以先註解起來
 	//網址後半段有問題
 	var millisec_total = (focusMin * 60 + focusSec) * 1000;
     //console.log(typeof(tag));
     //console.log(encodeURIComponent(tag));
 	//location.href = "index.php?timeSpan=" + millisec_total.toString() + "&startTime=" + current_time.toString() + "&tag=" + encodeURIComponent(tag);
-	
+	*/
+	alert("繼續工作囉!");
+	location.reload();
 }
